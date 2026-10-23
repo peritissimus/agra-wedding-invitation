@@ -40,8 +40,13 @@ export const sharedDefs = `<svg class="defs" width="0" height="0" aria-hidden="t
 <radialGradient id="shine" cx=".32" cy=".25" r=".45"><stop stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
 <linearGradient id="marble" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fcf8ef"/><stop offset="1" stop-color="#efe5cf"/></linearGradient>
 <linearGradient id="marble-face" x1="0" x2="1"><stop stop-color="#fffdf7"/><stop offset=".6" stop-color="#f8f1e1"/><stop offset="1" stop-color="#ecdfc3"/></linearGradient>
+<linearGradient id="marble-side" x1="0" x2="1"><stop stop-color="#f3eada"/><stop offset="1" stop-color="#e5d7ba"/></linearGradient>
+<linearGradient id="marble-far" x1="0" x2="1"><stop stop-color="#fbf4e3"/><stop offset="1" stop-color="#efe3c8"/></linearGradient>
+<linearGradient id="plinth" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f7efdd"/><stop offset="1" stop-color="#e9dcc0"/></linearGradient>
+<radialGradient id="dome" cx=".36" cy=".34" r=".78"><stop stop-color="#fffefa"/><stop offset=".5" stop-color="#f7f0e0"/><stop offset="1" stop-color="#e3d5b6"/></radialGradient>
 <linearGradient id="arch-shadow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dcc69a"/><stop offset="1" stop-color="#efe3c9"/></linearGradient>
 <radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop stop-color="#fff7d6"/><stop offset=".35" stop-color="#fde49a"/><stop offset=".7" stop-color="#f9d46a" stop-opacity=".45"/><stop offset="1" stop-color="#f9d46a" stop-opacity="0"/></radialGradient>
+<linearGradient id="lawn" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#93b56c"/><stop offset="1" stop-color="#6f9a52"/></linearGradient>
 <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e7eed9"/><stop offset="1" stop-color="#c9dcc3"/></linearGradient>
 <linearGradient id="cypress" x1="0" x2="1"><stop stop-color="#2c6b4c"/><stop offset="1" stop-color="#174a35"/></linearGradient>
 <linearGradient id="mango" x1="0" x2="1"><stop stop-color="#2f6b3a"/><stop offset="1" stop-color="#76a043"/></linearGradient>
