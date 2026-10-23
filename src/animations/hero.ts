@@ -9,7 +9,7 @@ export function prepareHero(reduced: boolean) {
   }
   gsap.set(hero.querySelectorAll('.h-in'), { autoAlpha: 0, y: 8, filter: 'blur(4px)' })
   gsap.set(hero.querySelectorAll('.taj-lines path'), { strokeDasharray: 1, strokeDashoffset: 1.001 })
-  gsap.set(hero.querySelectorAll('.taj-fills, .taj-reflect, .shimmer'), { autoAlpha: 0 })
+  gsap.set(hero.querySelectorAll('.taj-fills, .taj-details, .taj-reflect, .shimmer'), { autoAlpha: 0 })
   gsap.set(hero.querySelector('.taj-sun'), { autoAlpha: 0, y: 40 })
   gsap.set(hero.querySelectorAll('.taj-trees .tree'), { scale: 0.4, autoAlpha: 0, transformOrigin: '50% 100%' })
   gsap.set(hero.querySelectorAll('.garland .strand'), { y: -230 })
@@ -32,7 +32,7 @@ export function heroTimeline(reduced: boolean) {
   // Scenery (decorative, can run a little longer than the text)
   tl.to(hero.querySelector('.taj-sun'), { autoAlpha: 1, y: 0, duration: 1.4 }, 0)
     .to(hero.querySelectorAll('.taj-lines path'), { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut', stagger: 0.008 }, 0.05)
-    .to(hero.querySelector('.taj-fills'), { autoAlpha: 1, duration: 0.8 }, 0.55)
+    .to(hero.querySelectorAll('.taj-fills, .taj-details'), { autoAlpha: 1, duration: 0.8 }, 0.55)
     .to(hero.querySelectorAll('.taj-trees .tree'), { scale: 1, autoAlpha: 1, duration: 0.6, stagger: 0.04 }, 0.35)
     .to(hero.querySelectorAll('.taj-reflect, .shimmer'), { autoAlpha: 1, duration: 1 }, 1.0)
     .to(hero.querySelector('.garland .leaves'), { y: 0, autoAlpha: 1, duration: 0.6 }, 0)

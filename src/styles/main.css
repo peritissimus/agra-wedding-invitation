@@ -132,21 +132,30 @@ p { margin: 0 auto; max-width: 34em; font-size: 20px; line-height: 1.75; color: 
 
 /* ---------- Hero: the Taj at sunrise ---------- */
 .hero {
-  --taj-h: min(44svh, 60vw);
+  --taj-h: min(50svh, 66vw);
   position: relative;
   min-height: 100svh;
   overflow: hidden;
   display: grid;
   place-items: center;
-  padding: clamp(96px, 11vw, 150px) 24px calc(var(--taj-h) * 0.95);
+  padding: clamp(96px, 11vw, 150px) 24px calc(var(--taj-h) * 0.84);
   text-align: center;
   background: linear-gradient(180deg, #fdf8ea 0%, #fcf1d2 42%, #f9e3a0 78%, #f5d579 100%);
 }
-.taj { position: absolute; left: 50%; bottom: 0; height: var(--taj-h); width: auto; aspect-ratio: 1000 / 640; translate: -50% 0; overflow: visible; z-index: 1; }
+.taj { position: absolute; left: 50%; bottom: 0; height: var(--taj-h); width: auto; aspect-ratio: 1200 / 640; translate: -50% 0; overflow: visible; z-index: 1; }
 .taj-lines path { fill: none; stroke: #c4a466; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
-.rays { fill: #f6c445; opacity: 0.07; transform-box: view-box; transform-origin: 500px 236px; animation: spin 160s linear infinite; }
+.rays { fill: #f6c445; opacity: 0.07; transform-box: view-box; transform-origin: 600px 250px; animation: spin 160s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .taj-reflect { opacity: 0.35; }
+.taj-details path { fill: none; stroke: #c9b48a; stroke-width: 0.7; stroke-linecap: round; }
+.taj-details .course { stroke: #ddd0b1; stroke-width: 0.6; }
+.taj-details .dentil { stroke: #c9b48a; stroke-dasharray: 1.4 1.6; }
+.taj-details .dome-course { stroke: #e6dcc6; stroke-width: 0.8; }
+.taj-details .arcade, .taj-details .flute { stroke: #c4a466; stroke-width: 0.6; }
+.taj-details .frieze { stroke: #c4a466; stroke-width: 2.4; stroke-dasharray: 1 2.2; }
+.taj-details .callig { stroke: #8f7650; stroke-width: 2.2; stroke-dasharray: 1.6 1.4 0.6 1.4; opacity: 0.7; }
+.taj-details .spandrel { stroke: #9c8457; stroke-width: 0.8; }
+.taj-details .jaali { stroke: #b49c6c; stroke-width: 0.7; }
 .shimmer { fill: none; stroke: #fff; stroke-opacity: 0.55; stroke-width: 1.2; stroke-linecap: round; stroke-dasharray: 30 18; animation: shimmer 7s linear infinite; }
 @keyframes shimmer { to { stroke-dashoffset: -96; } }
 
