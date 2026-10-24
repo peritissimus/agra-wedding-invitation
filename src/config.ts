@@ -1,6 +1,6 @@
 /**
  * All invitation content lives here. Edit this file, then redeploy.
- * Times are local to Agra (IST).
+ * Dates and times are as they are in Agra (see `timeZone`).
  */
 export type EventIcon = 'haldi' | 'mehendi' | 'sangeet' | 'baraat' | 'wedding' | 'reception' | 'lotus'
 export type TravelIcon = 'plane' | 'car' | 'train'
@@ -9,8 +9,10 @@ export interface WeddingEvent {
   name: string
   date: string // "YYYY-MM-DD"
   time: string // 24h "HH:MM"
+  /** How long it runs, for calendar entries. */
   durationHours: number
   place?: string
+  /** What to wear; `color` is any CSS colour or gradient, shown as a dot. */
   dress?: { label: string; color: string }
   /** Optional; otherwise picked from the name (haldi → bowl, mehendi → cone…). */
   icon?: EventIcon
@@ -19,15 +21,20 @@ export interface WeddingEvent {
 export interface WeddingConfig {
   partnerOne: string
   partnerTwo: string
+  /** The venue's time zone and its UTC offset: countdowns and calendar entries are right wherever guests are. */
+  timeZone: string
+  utcOffset: string
   hostLine: string
   city: string
   message: string
   events: WeddingEvent[]
   /** Index into `events` used for the countdown and the hero date. */
   mainEvent: number
-  venue: { name: string; address: string; mapQuery?: string; note?: string }
-  palette: { name: string; color: string }[]
+  venue: { name: string; address?: string; mapQuery?: string; note?: string }
+  /** The dress-code section: a heading (second part in italics), a line, and colours to show. */
+  attire: { title: [string, string]; note: string; palette: { name: string; color: string }[] }
   travel: { title: string; note: string; icon: TravelIcon }[]
+  /** Leave `email` empty to leave the RSVP button out. */
   rsvp: { email: string; deadline?: string; note?: string }
   closing: string
   /** Shows a small "sample" note in the footer until real details are in. */
@@ -35,43 +42,61 @@ export interface WeddingConfig {
 }
 
 export const config: WeddingConfig = {
-  partnerOne: 'Meera',
-  partnerTwo: 'Arjun',
-  hostLine: 'Together with their families',
+  partnerOne: 'Arutna',
+  partnerTwo: 'Kushal',
+  timeZone: 'Asia/Kolkata',
+  utcOffset: '+05:30',
+  hostLine: 'And it’s finally happening!',
   city: 'Agra',
-  message:
-    'With the blessings of our families, we invite you to Agra — the city of the Taj, the world’s most beautiful monument to love — to celebrate the beginning of our forever.',
+  message: 'The countdown to two days of love, laughter, dancing and all things shaadi begins!',
   events: [
-    { name: 'Haldi', date: '2027-11-19', time: '10:00', durationHours: 3, place: 'Poolside lawns', dress: { label: 'Shades of yellow', color: '#f2b51f' } },
-    { name: 'Mehendi', date: '2027-11-19', time: '16:00', durationHours: 4, place: 'The courtyard', dress: { label: 'Shades of green', color: '#5f8a3c' } },
-    { name: 'Sangeet', date: '2027-11-20', time: '19:30', durationHours: 4, place: 'The grand ballroom', dress: { label: 'Indo-western glam', color: '#c9a24a' } },
-    { name: 'Baraat', date: '2027-11-21', time: '18:00', durationHours: 1.5, place: 'Main gate', dress: { label: 'Festive traditional', color: '#e8a317' } },
-    { name: 'Wedding', date: '2027-11-21', time: '19:30', durationHours: 4, place: 'The Mughal lawns', dress: { label: 'Traditional', color: '#1f5c42' } },
+    {
+      name: 'Haldi',
+      date: '2026-11-23',
+      time: '10:30',
+      durationHours: 3,
+      dress: { label: 'Come in your brightest, most colourful ethnics!', color: 'conic-gradient(#f2b51f 0 25%, #e8533f 0 50%, #d6336c 0 75%, #3f9a5a 0)' },
+    },
+    {
+      name: 'Sangeet',
+      date: '2026-11-23',
+      time: '19:00',
+      durationHours: 4,
+      dress: { label: 'Bring your Bollywood energy, killer moves and most extraaaa outfits!', color: 'radial-gradient(circle at 35% 30%, #fff3c4, #d4a537 45%, #8c6a24)' },
+    },
+    {
+      name: 'Wedding',
+      date: '2026-11-24',
+      time: '12:00',
+      durationHours: 4,
+      dress: { label: 'Pretty pastels and your best ethnic fits!', color: 'conic-gradient(#f2c9d1 0 25%, #cbe6d6 0 50%, #dccff0 0 75%, #c9dcef 0)' },
+    },
   ],
-  mainEvent: 4,
+  mainEvent: 2,
   venue: {
-    name: 'The Yamuna Pavilion',
-    address: 'Your venue address, Agra, Uttar Pradesh',
-    note: 'A short drive from the Taj Mahal, set in a riverside Mughal garden.',
+    name: 'Agra',
+    address: 'India',
+    mapQuery: 'Agra, India',
   },
-  palette: [
-    { name: 'Marigold', color: '#f2b51f' },
-    { name: 'Turmeric', color: '#e3a008' },
-    { name: 'Mehendi', color: '#6f8a3a' },
-    { name: 'Emerald', color: '#1f5c42' },
-    { name: 'Pistachio', color: '#c9d6a3' },
-    { name: 'Ivory', color: '#f4ecd8' },
-  ],
+  attire: {
+    title: ['Your best', 'ethnic fits'],
+    note: 'Each celebration has its own dress code, noted above. For the wedding, think pretty pastels:',
+    palette: [
+      { name: 'Blush', color: '#f2c9d1' },
+      { name: 'Mint', color: '#cbe6d6' },
+      { name: 'Lilac', color: '#dccff0' },
+      { name: 'Powder blue', color: '#c9dcef' },
+      { name: 'Peach', color: '#f7d5c0' },
+    ],
+  },
   travel: [
-    { icon: 'plane', title: 'By air', note: 'Most guests fly into Delhi (DEL). Agra’s own airport (AGR) has a few domestic flights.' },
+    { icon: 'plane', title: 'By air', note: 'Fly into Delhi (DEL). Agra’s own airport (AGR) has a few domestic flights.' },
     { icon: 'car', title: 'By road', note: 'About three to four hours from Delhi on the Yamuna Expressway.' },
     { icon: 'train', title: 'By rail', note: 'The Gatimaan Express runs from Hazrat Nizamuddin to Agra Cantt in about 100 minutes.' },
   ],
   rsvp: {
     email: '',
-    deadline: '2027-10-15',
-    note: 'Please let us know which celebrations you can join, and any dietary requirements.',
   },
   closing: 'With love',
-  sample: true,
+  sample: false,
 }

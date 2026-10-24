@@ -30,12 +30,8 @@ setInterval(tick, 30_000)
 document.getElementById('ics')!.addEventListener('click', downloadIcs)
 ;(document.getElementById('gcal') as HTMLAnchorElement).href = googleCalendarUrl()
 
-// RSVP
-document.getElementById('rsvp-btn')!.addEventListener('click', () => {
-  if (!config.rsvp.email) {
-    document.getElementById('rsvp-note')!.textContent = 'RSVP details are coming soon.'
-    return
-  }
+// RSVP (the button is only there when there's an address to reply to)
+document.getElementById('rsvp-btn')?.addEventListener('click', () => {
   const subject = encodeURIComponent(`RSVP — ${couple()}`)
   const events = config.events.map((e) => `${e.name}: Yes / No`).join('\n')
   const body = encodeURIComponent(

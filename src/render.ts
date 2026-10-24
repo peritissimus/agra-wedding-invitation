@@ -1,5 +1,5 @@
 import { config } from './config'
-import { couple, dateRange, esc, eventStart, fmtDay, fmtTime, fmtWeekday, initials, mainEvent, weddingStart } from './lib/format'
+import { couple, dateRange, dayOf, esc, eventStart, fmtDay, fmtTime, fmtWeekday, initials, mainEvent, monthOf, weddingStart, weekdayOf, yearOf } from './lib/format'
 import { sharedDefs } from './art/defs'
 import { garland } from './art/garland'
 import { charbagh, dateArch, diya, eventIcon, inlayFlower, lotus, paisley, petals, swatch, travelIcon } from './art/motifs'
@@ -12,7 +12,7 @@ export function render(root: HTMLElement) {
   const start = weddingStart()
   const main = mainEvent()
   const days = new Set(config.events.map((e) => e.date)).size
-  const mapQuery = config.venue.mapQuery ?? `${config.venue.name} ${config.venue.address}`
+  const mapQuery = config.venue.mapQuery ?? [config.venue.name, config.venue.address].filter(Boolean).join(' ')
   const box = `left:${doorBox.left}%;top:${doorBox.top}%;width:${doorBox.width}%;height:${doorBox.height}%`
 
   root.innerHTML = `${sharedDefs}
@@ -66,9 +66,9 @@ export function render(root: HTMLElement) {
     <div class="date-arch">
       ${dateArch()}
       <div class="date-inner reveal">
-        <span class="d-week">${esc(start.toLocaleDateString('en-GB', { weekday: 'long' }))}</span>
-        <span class="d-day">${start.getDate()}</span>
-        <span class="d-month">${esc(start.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }))}</span>
+        <span class="d-week">${esc(weekdayOf(main.date))}</span>
+        <span class="d-day">${dayOf(main.date)}</span>
+        <span class="d-month">${esc(`${monthOf(main.date)} ${yearOf(main.date)}`)}</span>
         <span class="d-time">${esc(main.name)} at ${fmtTime(start)}</span>
       </div>
     </div>
@@ -96,7 +96,7 @@ export function render(root: HTMLElement) {
             <p class="ev-date">${esc(fmtWeekday(e.date))}</p>
             <h3>${esc(e.name)}</h3>
             <p class="ev-meta">${fmtTime(eventStart(e))}${e.place ? ` · ${esc(e.place)}` : ''}</p>
-            ${e.dress ? `<p class="ev-dress"><i style="--c:${e.dress.color}"></i>${esc(e.dress.label)}</p>` : ''}
+            ${e.dress ? `<p class="ev-dress"><i style="--c:${esc(e.dress.color)}"></i>${esc(e.dress.label)}</p>` : ''}
           </div>
         </div>
       </li>`,
@@ -110,7 +110,7 @@ export function render(root: HTMLElement) {
   <p class="eyebrow reveal">Where</p>
   ${charbagh()}
   <h2 class="reveal venue-name">${esc(config.venue.name)}</h2>
-  <p class="reveal muted italic">${esc(config.venue.address)}</p>
+  ${config.venue.address ? `<p class="reveal muted italic">${esc(config.venue.address)}</p>` : ''}
   ${config.venue.note ? `<p class="reveal small">${esc(config.venue.note)}</p>` : ''}
   <div class="reveal actions"><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}">View on map</a></div>
 </section>
@@ -119,9 +119,9 @@ export function render(root: HTMLElement) {
 
 <section class="block attire" id="attire">
   <p class="eyebrow reveal">Dress code</p>
-  <h2 class="reveal">Marigold <em>&amp; mehendi</em></h2>
-  <p class="reveal">Each celebration has its own colour, noted above. If you would like to match our palette:</p>
-  <ul class="palette" aria-label="Suggested colours">${config.palette
+  <h2 class="reveal">${esc(config.attire.title[0])} <em>${esc(config.attire.title[1])}</em></h2>
+  <p class="reveal">${esc(config.attire.note)}</p>
+  <ul class="palette" aria-label="Suggested colours">${config.attire.palette
     .map((p, i) => `<li class="chip">${swatch(p.color, i)}<span>${esc(p.name)}</span></li>`)
     .join('')}</ul>
 </section>
@@ -139,13 +139,16 @@ export function render(root: HTMLElement) {
 <section class="emerald rsvp jaali-bg" id="rsvp">
   <div class="inner">
     ${lotus()}
-    <p class="eyebrow reveal">Kindly reply</p>
+    ${
+      config.rsvp.email
+        ? `<p class="eyebrow reveal">Kindly reply</p>
     <h2 class="reveal">Will you join us <em>in ${esc(config.city)}?</em></h2>
-    <p class="reveal muted italic">${
-      config.rsvp.deadline ? `Kindly respond by ${esc(fmtDay(config.rsvp.deadline))}` : 'We cannot wait to celebrate with you'
-    }</p>
+    <p class="reveal muted italic">${config.rsvp.deadline ? `Kindly respond by ${esc(fmtDay(config.rsvp.deadline))}` : 'We can’t wait to celebrate with you!'}</p>
     <div class="reveal actions"><button class="btn gold solid" id="rsvp-btn">RSVP</button></div>
-    <p class="reveal small" id="rsvp-note">${config.rsvp.note ? esc(config.rsvp.note) : ''}</p>
+    ${config.rsvp.note ? `<p class="reveal small">${esc(config.rsvp.note)}</p>` : ''}`
+        : `<p class="eyebrow reveal">See you in ${esc(config.city)}</p>
+    <h2 class="reveal">We can’t wait <em>to celebrate with you!</em></h2>`
+    }
   </div>
 </section>
 

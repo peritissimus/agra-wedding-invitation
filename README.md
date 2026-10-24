@@ -16,10 +16,12 @@ Live: https://agra-wedding-invitation.vercel.app
 
 ## Editing the invitation
 
-All content lives in [`src/config.ts`](src/config.ts): names, the list of
-celebrations (date, time, place, dress colour), which one is the main event
-(countdown + hero date), venue, colour palette, travel notes, RSVP email and
-deadline. Set `sample: false` once the real details are in.
+All content lives in [`src/config.ts`](src/config.ts): names, Agra's time zone,
+the list of celebrations (date, time, place, dress code), which one is the main
+event (countdown + hero date), venue, dress-code palette, travel notes, RSVP
+email and deadline (leave the email empty to leave the RSVP button out). Times
+are shown in Agra time wherever guests open the invitation, and the countdown
+and calendar entries are correct in any time zone.
 
 “Add all to calendar” exports every celebration in one `.ics` file.
 
