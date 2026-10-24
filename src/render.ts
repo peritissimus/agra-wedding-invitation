@@ -54,10 +54,7 @@ export function render(root: HTMLElement) {
   <svg class="motif" viewBox="0 0 200 200" aria-hidden="true">${inlayFlower('inlay')}</svg>
   <p class="eyebrow reveal">In the city of love</p>
   <h2 class="reveal">A celebration <em>in ${esc(config.city)}</em></h2>
-  <p class="lead words">${config.message
-    .split(' ')
-    .map((w) => `<span class="word">${esc(w)}</span>`)
-    .join(' ')}</p>
+  <p class="lead reveal">${esc(config.message)}</p>
 </section>
 
 <section class="emerald when jaali-bg" id="when">

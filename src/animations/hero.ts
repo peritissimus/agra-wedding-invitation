@@ -1,4 +1,5 @@
 import { gsap } from 'gsap'
+import { blur } from './ease'
 
 export function prepareHero(reduced: boolean) {
   const hero = document.getElementById('hero')!
@@ -7,11 +8,11 @@ export function prepareHero(reduced: boolean) {
     gsap.set(hero.querySelectorAll('.h-in, .ink'), { autoAlpha: 0 })
     return
   }
-  gsap.set(hero.querySelectorAll('.h-in'), { autoAlpha: 0, y: 8, filter: 'blur(4px)' })
+  gsap.set(hero.querySelectorAll('.h-in'), { autoAlpha: 0, y: 8, ...blur(4) })
   gsap.set(hero.querySelectorAll('.taj-lines path'), { strokeDasharray: 1, strokeDashoffset: 1.001 })
   gsap.set(hero.querySelectorAll('.taj-fills, .taj-details, .taj-reflect, .shimmer'), { autoAlpha: 0 })
   gsap.set(hero.querySelector('.taj-sun'), { autoAlpha: 0, y: 40 })
-  gsap.set(hero.querySelectorAll('.taj-trees .tree'), { scale: 0.4, autoAlpha: 0, transformOrigin: '50% 100%' })
+  gsap.set(hero.querySelectorAll('.taj-trees .tree'), { scale: 0.7, autoAlpha: 0, transformOrigin: '50% 100%' })
   gsap.set(hero.querySelectorAll('.garland .strand'), { y: -230 })
   gsap.set(hero.querySelector('.garland .leaves'), { y: -40, autoAlpha: 0 })
 }
@@ -39,7 +40,7 @@ export function heroTimeline(reduced: boolean) {
     .to(hero.querySelectorAll('.garland .strand'), { y: 0, duration: 0.9, ease: 'back.out(1.25)', stagger: { each: 0.035, from: 'center' } }, 0.05)
 
   // Text
-  const settle = { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 0.5, clearProps: 'filter' }
+  const settle = { autoAlpha: 1, y: 0, ...blur(0), duration: 0.5, clearProps: 'filter' }
   tl.to(hero.querySelector('.hero-copy > .eyebrow'), settle, 0)
   hero.querySelectorAll<HTMLElement>('.ink').forEach((el, i) => {
     tl.fromTo(

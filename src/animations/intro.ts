@@ -1,9 +1,8 @@
 import { gsap } from 'gsap'
+import { blur } from './ease'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import type Lenis from 'lenis'
 
 interface IntroOptions {
-  lenis: Lenis | null
   reduced: boolean
   hero: () => gsap.core.Timeline
 }
@@ -14,7 +13,7 @@ interface IntroOptions {
  * opening: the medallion turns, the doors swing inwards, light spills through
  * and we walk through the arch into the hero. Scrolling is handed back at ~1.8s.
  */
-export function setupIntro({ lenis, reduced, hero }: IntroOptions) {
+export function setupIntro({ reduced, hero }: IntroOptions) {
   const root = document.documentElement
   const intro = document.getElementById('intro')!
   const portal = document.getElementById('portal')!
@@ -26,7 +25,6 @@ export function setupIntro({ lenis, reduced, hero }: IntroOptions) {
   const gutter = window.innerWidth - root.clientWidth
   root.classList.add('is-locked')
   if (gutter > 0) document.body.style.paddingRight = `${gutter}px`
-  lenis?.stop()
 
   if (!reduced) {
     // Arrival: the gold inlay traces itself around the arch while the copy settles.
@@ -34,7 +32,7 @@ export function setupIntro({ lenis, reduced, hero }: IntroOptions) {
     gsap.to(inlay, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut', stagger: 0.03 })
     gsap.from('.intro .band', { autoAlpha: 0, duration: 0.8, delay: 0.6, ease: 'emilOut' })
     gsap.from(seal, { scale: 0.9, autoAlpha: 0, duration: 0.6, delay: 0.2, ease: 'emilOut' })
-    gsap.from('.intro-copy > *', { y: 8, autoAlpha: 0, filter: 'blur(4px)', duration: 0.6, ease: 'emilOut', stagger: 0.08, delay: 0.3, clearProps: 'filter' })
+    gsap.from('.intro-copy > *', { y: 8, autoAlpha: 0, ...blur(4), duration: 0.5, ease: 'emilOut', stagger: 0.06, delay: 0.25, clearProps: 'filter' })
   }
 
   let opened = false
@@ -66,7 +64,6 @@ export function setupIntro({ lenis, reduced, hero }: IntroOptions) {
     root.classList.add('is-open')
     document.body.style.paddingRight = ''
     intro.hidden = true
-    lenis?.start()
     ScrollTrigger.refresh()
     document.querySelector<HTMLElement>('#hero h1')?.focus({ preventScroll: true })
   }
@@ -79,7 +76,7 @@ export function setupIntro({ lenis, reduced, hero }: IntroOptions) {
     const tl = gsap.timeline({ defaults: { ease: 'emilOut' } })
 
     if (reduced) {
-      tl.to(intro, { autoAlpha: 0, duration: 0.4, ease: 'none' }, 0).add(hero(), 0).call(finish, [], 0.4)
+      tl.to(intro, { autoAlpha: 0, duration: 0.4 }, 0).add(hero(), 0).call(finish, [], 0.4)
       return
     }
 
@@ -99,5 +96,15 @@ export function setupIntro({ lenis, reduced, hero }: IntroOptions) {
       .to('.intro .petals', { autoAlpha: 0, duration: 0.4 }, 1.1)
       .add(hero(), 0.95)
       .call(finish, [], 1.8)
+    // a fresh scroll, swipe, tap or key while the doors open eases the rest up to speed
+    const started = performance.now()
+    const hurry = () => {
+      if (performance.now() - started < 300) return
+      gsap.to(tl, { timeScale: 3, duration: 0.25, ease: 'power2.out' })
+      off()
+    }
+    const off = () => ['wheel', 'touchstart', 'mousedown', 'keydown'].forEach((t) => window.removeEventListener(t, hurry))
+    ;['wheel', 'touchstart', 'mousedown', 'keydown'].forEach((t) => window.addEventListener(t, hurry, { passive: true }))
+    tl.eventCallback('onComplete', off)
   }
 }
